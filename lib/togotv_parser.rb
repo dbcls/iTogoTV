@@ -26,7 +26,8 @@ class TogoTVParser
   
   def thumbnail
     # return URL of a thumbnail image
-    tail = @page.css("#image img").first.attr("src")
+    @page.css(".section").inner_html =~ /h3>.+?(<img.+?)<\/a>/m
+    tail = Nokogiri::HTML($1).css("img").attr("src").value
     "http://togotv.dbcls.jp/#{tail}"
   end
   
@@ -39,6 +40,6 @@ class TogoTVParser
     # return movie description by String
     section_html = @page.css(".section").inner_html
     section_html =~ /image\">.+?<\/div>(.+)id=\"movie/m
-    Nokogiri::HTML($1).inner_text.gsub("\n","").gsub(/【ダイジェスト】$/,"")
+    Nokogiri::HTML($1).inner_text.gsub("\n","").gsub(/【ダイジェスト】.+$/,"")
   end
 end

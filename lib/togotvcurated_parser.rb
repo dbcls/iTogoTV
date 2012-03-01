@@ -27,7 +27,7 @@ end
 
 class CategoryParser
   def initialize(category_url)
-    @page = Nokogiri::HTML(category_url)
+    @page = Nokogiri::HTML(open(category_url))
   end
   
   def subcategories
@@ -42,18 +42,10 @@ class CategoryParser
   end
   
   def subcat_movielist(subcat_href)
-    # return a hash, { href of togotv page, title of the movie }
+    # return an array of href, togotv page url.
     index_removed = @page.css(".hentry ul")[1]
-    target_subcat = index_removed.css("li").select{|li| li.css("a").first.attr("name") == subcat_href }.first
-    movlist = {}
-    target_subcat.css("a").each do |a|
-      href = a.attr("href")
-      title = a.inner_text
-      if href
-        movlist[href] = title
-      end
-    end
-    movlist
+    target_subcat = index_removed.css("li").select{|li| li.css("a").first.attr("name") == subcat_href.gsub("\#","")}.first
+    target_subcat.css("a").map{|a| a.attr("href").gsub(/\#.+$/,"")}.delete_if{|v| !v }
   end
 end
 
