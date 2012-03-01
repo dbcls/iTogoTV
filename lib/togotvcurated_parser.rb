@@ -11,6 +11,13 @@ class MainParser
     # return href of 10 latest movies
     @@page.css("tbody.row-hover tr").map{|tr| tr.css("a").attr("href").value.gsub(/\#.+$/,"") }[0..9]
   end
+
+  def self.rank(term)
+    # return 10 entries each, [[togotv url, view count, (up|down|same|new)]..]
+    # :yesterday, :week, :this_month, :last_month are allowed for the variant
+    yaml = YAML::load(open("http://togotv.dbcls.jp/count.yaml"))
+    yaml[term]
+  end
   
   def self.categories
     # return href of each movie categories page
@@ -50,27 +57,3 @@ class CategoryParser
   end
 end
 
-class RankingParser
-  # return 10 entries each, [[togotv url, view count, (up|down|same|new)]..]
-  @@yaml = YAML::load(open("http://togotv.dbcls.jp/count.yaml"))
-  
-  def self.yesterday
-    @@yaml[:yesterday]
-  end
-  
-  def self.this_week
-    @@yaml[:week]
-  end
-  
-  def self.this_month
-    @@yaml[:this_month]
-  end
-  
-  def self.last_month
-    @@yaml[:last_month]
-  end
-  
-  def self.last_christmas
-    "I gave you my heart"
-  end
-end
