@@ -27,18 +27,32 @@ end
 
 class CategoryParser
   def initialize(category_url)
+    @category_url = category_url
     @page = Nokogiri::HTML(open(category_url))
   end
   
   def subcategories
     # return a hash, { href of subcategories, title of subcategories }
-    subcat = {}
-    @page.css("li.toc-level-3").each do |li|
-      href = li.css("a").attr("href").value
-      title =  li.css("a").attr("title").value
-      subcat[href] = title
+    if @category_url =~ /dbcls$/
+      subcat = []
+      cur_cat = ""
+      @page.css("ul\#toc-371-1 li").each do |li|
+        if li.attr("class").include?("3")
+          cur_cat = li.css("a").attr("title").value
+        else
+          subcat.push([[cur_cat, li.css("a").attr("title").value], li.css("a").attr("href").value])
+        end
+      end
+      subcat
+    else
+      subcat = {}
+      @page.css("li.toc-level-3").each do |li|
+        href = li.css("a").attr("href").value
+        title =  li.css("a").attr("title").value
+        subcat[href] = title
+      end
+      subcat
     end
-    subcat
   end
   
   def subcat_movielist(subcat_href)
@@ -46,6 +60,12 @@ class CategoryParser
     index_removed = @page.css(".hentry ul").last
     target_subcat = index_removed.css("li").select{|li| li.css("a").first.attr("name") == subcat_href.gsub("\#","")}.first
     target_subcat.css("a").select{|a| a.attr("href")}.map{|a| a.attr("href").gsub(/\#.+$/,"")}.select{|href| href =~ /togotv\.dbcls\.jp/}
+  end
+  
+  def subcat_movielist_lecture(event_href)
+    # for lecture video
+    @page.css(".hentry").inner_html =~ /#{event_href.gsub("\#","")}">(.+?)<\/table>/m
+    Nokogiri::HTML($1).css("a").select{|a| a.attr("href") =~ /^http:\/\/togotv.dbcls.jp/}.map{|a| a.attr("href").gsub(/\#.+$/,"")}
   end
 end
 
