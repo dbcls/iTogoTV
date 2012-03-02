@@ -16,7 +16,7 @@ class MainParser
     # return 10 entries each, [[togotv url, view count, (up|down|same|new)]..]
     # :yesterday, :week, :this_month, :last_month are allowed for the variant
     yaml = YAML::load(open("http://togotv.dbcls.jp/count.yaml"))
-    yaml[term]
+    yaml[term][0..9]
   end
   
   def self.categories
@@ -43,9 +43,9 @@ class CategoryParser
   
   def subcat_movielist(subcat_href)
     # return an array of href, togotv page url.
-    index_removed = @page.css(".hentry ul")[1]
+    index_removed = @page.css(".hentry ul").last
     target_subcat = index_removed.css("li").select{|li| li.css("a").first.attr("name") == subcat_href.gsub("\#","")}.first
-    target_subcat.css("a").map{|a| a.attr("href").gsub(/\#.+$/,"")}.delete_if{|v| !v }
+    target_subcat.css("a").select{|a| a.attr("href")}.map{|a| a.attr("href").gsub(/\#.+$/,"")}.select{|href| href =~ /togotv\.dbcls\.jp/}
   end
 end
 
