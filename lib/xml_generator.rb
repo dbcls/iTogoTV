@@ -7,7 +7,9 @@ require "ap"
 
 build = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |xml|
   xml.xml {
+=begin
     xml.latest {
+    ap "latest"
       MainParser.latest_movies.each do |url|
         xml.movie {
           ttv = TogoTVParser.new(url)
@@ -23,8 +25,10 @@ build = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |xml|
       end
     }
     xml.ranking {
+    ap "ranking"
       [ :yesterday, :week, :this_month, :last_month ].each do |term|
         xml.term term
+        ap term
         ttv = MainParser.rank(term).each do |arr|
           xml.movie {
             url = "http://togotv.dbcls.jp/#{arr[0]}"
@@ -43,8 +47,11 @@ build = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |xml|
         end
       end
     }
+=end
     xml.categories {
+    ap "categories"
       MainParser.categories.each do |url|
+      ap url
         xml.category {
           xml.category_url url
           catp = CategoryParser.new(url)
@@ -52,10 +59,11 @@ build = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |xml|
             xml.subcategory {
               xml.subcategory_url url
               xml.subcategory_title title
+              ap url
               catp.subcat_movielist(url).each do |url|
+                ap url
                 xml.movie {
                   ttv = TogoTVParser.new(url)
-                  ap url
                   xml.url url
                   xml.mp4file_url ttv.mp4file_url
                   xml.title ttv.title
