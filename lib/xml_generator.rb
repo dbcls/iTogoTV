@@ -26,10 +26,9 @@ build = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |xml|
     }
     xml.ranking {
     ap "ranking"
-      [ :yesterday, :week, :this_month, :last_month ].each do |term|
-        xml.term term
-        ap term
-        ttv = MainParser.rank(term).each do |arr|
+      xml.yesterday {
+        ap "yesterday"
+        ttv = MainParser.rank( :yesterday ).each do |arr|
           xml.movie {
             url = "http://togotv.dbcls.jp/#{arr[0]}"
             ttv = TogoTVParser.new(url)
@@ -46,25 +45,81 @@ build = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |xml|
           }
         sleep 10
         end
-      end
+      }
+      xml.week {
+        ap "week"
+        ttv = MainParser.rank( :week ).each do |arr|
+          xml.movie {
+            url = "http://togotv.dbcls.jp/#{arr[0]}"
+            ttv = TogoTVParser.new(url)
+            ap url
+            xml.url url
+            xml.mp4file_url ttv.mp4file_url
+            xml.title ttv.title
+            xml.tag ttv.tag
+            xml.thumbnail ttv.thumbnail
+            xml.date ttv.date
+            xml.description ttv.text
+            xml.view_count arr[1]
+            xml.standings arr[2]
+          }
+        sleep 10
+        end
+      }
+      xml.this_month {
+        ap "this_month"
+        ttv = MainParser.rank( :this_month ).each do |arr|
+          xml.movie {
+            url = "http://togotv.dbcls.jp/#{arr[0]}"
+            ttv = TogoTVParser.new(url)
+            ap url
+            xml.url url
+            xml.mp4file_url ttv.mp4file_url
+            xml.title ttv.title
+            xml.tag ttv.tag
+            xml.thumbnail ttv.thumbnail
+            xml.date ttv.date
+            xml.description ttv.text
+            xml.view_count arr[1]
+            xml.standings arr[2]
+          }
+        sleep 10
+        end
+      }
+      xml.last_month {
+        ap "last_month"
+        ttv = MainParser.rank( :last_month ).each do |arr|
+          xml.movie {
+            url = "http://togotv.dbcls.jp/#{arr[0]}"
+            ttv = TogoTVParser.new(url)
+            ap url
+            xml.url url
+            xml.mp4file_url ttv.mp4file_url
+            xml.title ttv.title
+            xml.tag ttv.tag
+            xml.thumbnail ttv.thumbnail
+            xml.date ttv.date
+            xml.description ttv.text
+            xml.view_count arr[1]
+            xml.standings arr[2]
+          }
+        sleep 10
+        end
+      }
     }
     xml.categories {
     ap "categories"
       MainParser.categories.each do |url|
       ap url
-        xml.category {
-          xml.category_url url
+        xml.category( :url => url ) {
           catp = CategoryParser.new(url)
           subcat = catp.subcategories
           if subcat.class == Hash
             subcat.each_pair do |url, title|
-              xml.subcategory {
-                xml.subcategory_url url
-                xml.subcategory_title title
+              xml.subcategory( :url => url, :title => title) {
                 ap url
                 catp.subcat_movielist(url).each do |url|
                   ap url
-                  if url.length == 36
                   xml.movie {
                     ttv = TogoTVParser.new(url)
                     xml.url url
@@ -75,9 +130,6 @@ build = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |xml|
                     xml.date ttv.date
                     xml.description ttv.text
                   }
-                  else
-                    ap "pass"
-                  end
                 sleep 10
                 end
               }
