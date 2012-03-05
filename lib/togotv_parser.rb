@@ -39,7 +39,7 @@ class TogoTVParser
   def text
     # return movie description by String
     section_html = @page.css(".section").inner_html
-    section_html =~ /image\">.+?<\/div>(.+)id=\"movie/m
-    Nokogiri::HTML($1).inner_text.gsub("\n","").gsub(/【ダイジェスト】.+$/,"")
+    section_html =~ /image\">.+?<\/div>(.+?)id=\"movie/m
+    Nokogiri::HTML($1).inner_text.gsub("\n","").gsub(/YouTube版はこちらです。/,"").gsub(/【ダイジェスト】.*$/,"")
   end
 end
