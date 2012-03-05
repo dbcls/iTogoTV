@@ -1,0 +1,35 @@
+<!-- xml template for togotv-curated index data -->
+
+<xml>
+  <latest>
+    <movie>
+      <!-- movie description -->
+        <url>http://togotv.dbcls.jp/YYYYMMDD.html</url>
+        <mp4file_url>http://togotv.dbcls.jp/videocast/togotv_videocast/Media/(movie_filename).ff.mp4</mp4file_url>
+        <title>title of the movie</title>
+        <tag>["tag1", "tag2", ..]</tag>
+        <thumbnail>http://togotv.dbcls.jp/images/(img_filename).jpg</thumbnail>
+        <date>YYYY-MM-DD</date>
+        <description>movie description</description>
+    </movie>
+  </latest>
+  
+  <ranking>
+    <term> <!-- yesterday, week, this_month, last_month -->
+      <movie>
+        <!-- movie description -->
+      </movie>
+    </term>
+  </ranking>
+  
+  <categories>
+    <category url="(category_url, http://togotv-curated.dbcls.jp/contents/category/hoge)">
+      <subcategory url="subcategory_url, #hogehoge" title="nya-n">
+        <movie>
+          <!-- movie description -->
+        </movie>
+      </subcategory>
+    </category>
+  </categories>
+</xml>
+
