@@ -7,7 +7,6 @@ require "ap"
 
 build = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |xml|
   xml.xml {
-=begin
     xml.latest {
     ap "latest"
       MainParser.latest_movies.each do |url|
@@ -22,6 +21,7 @@ build = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |xml|
           xml.date ttv.date
           xml.description ttv.text
         }
+      sleep 10
       end
     }
     xml.ranking {
@@ -44,10 +44,10 @@ build = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |xml|
             xml.view_count arr[1]
             xml.standings arr[2]
           }
+        sleep 10
         end
       end
     }
-=end
     xml.categories {
     ap "categories"
       MainParser.categories.each do |url|
@@ -57,7 +57,6 @@ build = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |xml|
           catp = CategoryParser.new(url)
           subcat = catp.subcategories
           if subcat.class == Hash
-=begin
             subcat.each_pair do |url, title|
               xml.subcategory {
                 xml.subcategory_url url
@@ -79,10 +78,10 @@ build = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |xml|
                   else
                     ap "pass"
                   end
+                sleep 10
                 end
               }
             end
-=end
           else
             subcat.each do |arr|
               xml.subcategory {
