@@ -82,6 +82,7 @@ build = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |xml|
                 end
               }
             end
+=begin
           else
             subcat.each do |arr|
               xml.subcategory {
@@ -105,6 +106,8 @@ build = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |xml|
                 end
               }
             end
+          end
+=end
           end
         }
       end
