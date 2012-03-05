@@ -18,6 +18,15 @@
     <term> <!-- yesterday, week, this_month, last_month -->
       <movie>
         <!-- movie description -->
+        <url>http://togotv.dbcls.jp/YYYYMMDD.html</url>
+        <mp4file_url>http://togotv.dbcls.jp/videocast/togotv_videocast/Media/(movie_filename).ff.mp4</mp4file_url>
+        <title>title of the movie</title>
+        <tag>["tag1", "tag2", ..]</tag>
+        <thumbnail>http://togotv.dbcls.jp/images/(img_filename).jpg</thumbnail>
+        <date>YYYY-MM-DD</date>
+        <description>movie description</description>
+        <view_count>view count</view_count>
+        <standings>up/down/same/new</standings>
       </movie>
     </term>
   </ranking>
@@ -27,6 +36,13 @@
       <subcategory url="subcategory_url, #hogehoge" title="nya-n">
         <movie>
           <!-- movie description -->
+          <url>http://togotv.dbcls.jp/YYYYMMDD.html</url>
+          <mp4file_url>http://togotv.dbcls.jp/videocast/togotv_videocast/Media/(movie_filename).ff.mp4</mp4file_url>
+          <title>title of the movie</title>
+          <tag>["tag1", "tag2", ..]</tag>
+          <thumbnail>http://togotv.dbcls.jp/images/(img_filename).jpg</thumbnail>
+          <date>YYYY-MM-DD</date>
+          <description>movie description</description>
         </movie>
       </subcategory>
     </category>
