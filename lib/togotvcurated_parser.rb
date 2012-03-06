@@ -11,6 +11,17 @@ class MainParser
     # return href of 10 latest movies
     @@page.css("tbody.row-hover tr").map{|tr| tr.css("a").attr("href").value.gsub(/\#.+$/,"") }[0..9]
   end
+  
+  def self.movie_desc
+    # return hash { movie_url => text }
+    movie_desc = {}
+    @@page.css("tbody.row-hover tr").each do |tr|
+      url = tr.css("a").attr("href").value.gsub(/\#.*$/,"")
+      text = tr.css("td").select{|td| td.attr("class") == "column-4"}.join
+      movie_desc[url] = text
+    end
+    movie_desc
+  end
 
   def self.rank(term)
     # return 10 entries each, [[togotv url, view count, (up|down|same|new)]..]
