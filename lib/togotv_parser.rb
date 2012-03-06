@@ -39,6 +39,6 @@ class TogoTVParser
   
   def text(movie_desc)
     # return movie description by String
-    movie_desc[togotv_url]
+    movie_desc[@togotv_url.gsub(/\?.*$/,"")]
   end
 end
