@@ -5,6 +5,8 @@ require "./togotvcurated_parser"
 require "./togotv_parser"
 require "ap"
 
+@movie_desc = MainParser.movie_desc
+
 build = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |xml|
   xml.xml {
     xml.latest {
@@ -19,7 +21,7 @@ build = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |xml|
           xml.tag ttv.tag
           xml.thumbnail ttv.thumbnail
           xml.date ttv.date
-          xml.description ttv.text
+          xml.description ttv.text(@movie_desc)
         }
       sleep 10
       end
@@ -39,7 +41,7 @@ build = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |xml|
             xml.tag ttv.tag
             xml.thumbnail ttv.thumbnail
             xml.date ttv.date
-            xml.description ttv.text
+            xml.description ttv.text(@movie_desc)
             xml.view_count arr[1]
             xml.standings arr[2]
           }
@@ -59,7 +61,7 @@ build = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |xml|
             xml.tag ttv.tag
             xml.thumbnail ttv.thumbnail
             xml.date ttv.date
-            xml.description ttv.text
+            xml.description ttv.text(@movie_desc)
             xml.view_count arr[1]
             xml.standings arr[2]
           }
@@ -79,7 +81,7 @@ build = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |xml|
             xml.tag ttv.tag
             xml.thumbnail ttv.thumbnail
             xml.date ttv.date
-            xml.description ttv.text
+            xml.description ttv.text(@movie_desc)
             xml.view_count arr[1]
             xml.standings arr[2]
           }
@@ -99,7 +101,7 @@ build = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |xml|
             xml.tag ttv.tag
             xml.thumbnail ttv.thumbnail
             xml.date ttv.date
-            xml.description ttv.text
+            xml.description ttv.text(@movie_desc)
             xml.view_count arr[1]
             xml.standings arr[2]
           }
@@ -128,7 +130,7 @@ build = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |xml|
                     xml.tag ttv.tag
                     xml.thumbnail ttv.thumbnail
                     xml.date ttv.date
-                    xml.description ttv.text
+                    xml.description ttv.text(@movie_desc)
                   }
                 sleep 10
                 end
@@ -152,7 +154,7 @@ build = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |xml|
                     xml.tag ttv.tag
                     xml.thumbnail ttv.thumbnail
                     xml.date ttv.date
-                    xml.description ttv.text
+                    xml.description ttv.text(@movie_desc)
                   }
                 sleep 10
                 end
@@ -167,4 +169,4 @@ build = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |xml|
   }
 end
 
-puts build.to_xml
+open("./togotv_#{Time.now.strftime("%m%d-%H%M")}","w"){|f| f.puts(build.to_xml)}
