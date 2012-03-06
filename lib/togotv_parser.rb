@@ -6,6 +6,7 @@ require "nokogiri"
 class TogoTVParser
   def initialize(togotv_url)
     @page = Nokogiri::HTML(open(togotv_url))
+    @togotv_url = togotv_url
   end
   
   def mp4file_url
@@ -36,10 +37,8 @@ class TogoTVParser
     @page.css("h2 a").inner_text
   end
   
-  def text
+  def text(movie_desc)
     # return movie description by String
-    section_html = @page.css(".section").inner_html
-    section_html =~ /image\">.+?<\/div>(.+?)id=\"movie/m
-    Nokogiri::HTML($1).inner_text.gsub("\n","").gsub(/YouTube版はこちらです。/i,"").gsub(/【ダイジェスト】.*$/,"").gsub(/発表資料はこちら.*$/,"").gsub(/画像をクリックすると.*$/,"")
+    movie_desc[togotv_url]
   end
 end
