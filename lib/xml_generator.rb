@@ -3,6 +3,7 @@
 require "nokogiri"
 require "./togotvcurated_parser"
 require "./togotv_parser"
+require "fileutils"
 require "ap"
 
 @movie_desc = MainParser.movie_desc
@@ -169,4 +170,5 @@ build = Nokogiri::XML::Builder.new(:encoding => 'utf-8') do |xml|
   }
 end
 
-open("./togotv_#{Time.now.strftime("%m%d-%H%M")}","w"){|f| f.puts(build.to_xml)}
+FileUtils.mv("/Library/WebServer/Document/togotv.xml","../data/togotv_#{Time.now.strftime("%Y%m%d%H%M%S")}.xml")
+open("/Library/WebServer/Document/togotv.xml","w"){|f| f.puts(build.to_xml)}
